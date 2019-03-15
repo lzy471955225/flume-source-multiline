@@ -378,6 +378,10 @@ public class MultiLineExecSource extends AbstractSource implements EventDrivenSo
 
 					synchronized (eventList) {
 						if(!buffer.isEmpty()) {
+							//remove separator that final in line.
+							String str = buffer.remove(buffer.size() - 1);
+							buffer.add(str.substring(0, str.length() - 1));
+							//write to body
 							sourceCounter.incrementEventReceivedCount();
 							//multiline setting start
 							String total = "";
