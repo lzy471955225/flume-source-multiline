@@ -364,9 +364,9 @@ public class MultiLineExecSource extends AbstractSource implements EventDrivenSo
 									}
 									buffer.clear();
 								}
-								buffer.add(line + "\u0003");
+								buffer.add(line + "\u0003");//add separator.
 							}else {
-								buffer.add(line + "\u0003");
+								buffer.add(line + "\u0003");//add separator.
 							}
 							//multiline setting end
 						}
