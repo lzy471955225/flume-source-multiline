@@ -163,7 +163,8 @@ public class MultiLineExecSource extends AbstractSource implements EventDrivenSo
 	private Charset charset;
 
 	private String regex;
-
+	private String separator;
+	
 	@Override
 	public void start() {
 		logger.info("Exec source starting with command:{}", command);
@@ -171,7 +172,7 @@ public class MultiLineExecSource extends AbstractSource implements EventDrivenSo
 		executor = Executors.newSingleThreadExecutor();
 
 		runner = new ExecRunnable(shell, command, getChannelProcessor(), sourceCounter,
-				restart, restartThrottle, logStderr, bufferCount, batchTimeout, charset, regex);
+				restart, restartThrottle, logStderr, bufferCount, batchTimeout, charset, regex, separator);
 
 		// FIXME: Use a callback-like executor / future to signal us upon failure.
 		runnerFuture = executor.submit(runner);
@@ -248,6 +249,7 @@ public class MultiLineExecSource extends AbstractSource implements EventDrivenSo
 		shell = context.getString(ExecSourceConfigurationConstants.CONFIG_SHELL, null);
 
 		regex = context.getString(MultiLineExecSourceConfigurationConstants.REGEX, MultiLineExecSourceConfigurationConstants.DEFAULT_REGEX);
+		separator = context.getString(MultiLineExecSourceConfigurationConstants.SEPARATOR, MultiLineExecSourceConfigurationConstants.DEFAULT_SEPARATOR); 
 
 		if (sourceCounter == null) {
 			sourceCounter = new SourceCounter(getName());
@@ -258,7 +260,7 @@ public class MultiLineExecSource extends AbstractSource implements EventDrivenSo
 
 		public ExecRunnable(String shell, String command, ChannelProcessor channelProcessor,
 							SourceCounter sourceCounter, boolean restart, long restartThrottle,
-							boolean logStderr, int bufferCount, long batchTimeout, Charset charset, String regex) {
+							boolean logStderr, int bufferCount, long batchTimeout, Charset charset, String regex, String separator) {
 			this.command = command;
 			this.channelProcessor = channelProcessor;
 			this.sourceCounter = sourceCounter;
@@ -270,6 +272,7 @@ public class MultiLineExecSource extends AbstractSource implements EventDrivenSo
 			this.charset = charset;
 			this.shell = shell;
 			this.regex = regex;
+			this.separator = separator;
 			this.pattern = Pattern.compile(regex);
 		}
 
@@ -290,6 +293,7 @@ public class MultiLineExecSource extends AbstractSource implements EventDrivenSo
 		ScheduledFuture<?> future;
 		///multiline setting start
 		private String regex;
+		private String separator;
 		private Pattern pattern;
 		List<String> buffer = new ArrayList<String>();
 		//multiline setting end
@@ -364,9 +368,9 @@ public class MultiLineExecSource extends AbstractSource implements EventDrivenSo
 									}
 									buffer.clear();
 								}
-								buffer.add(line + "\u0003");//add separator.
+								buffer.add(line + separator);//add separator.
 							}else {
-								buffer.add(line + "\u0003");//add separator.
+								buffer.add(line + separator);//add separator.
 							}
 							//multiline setting end
 						}
