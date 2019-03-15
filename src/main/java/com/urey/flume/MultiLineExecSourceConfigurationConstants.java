@@ -30,4 +30,11 @@ public class MultiLineExecSourceConfigurationConstants {
 	 */
 	public static final String REGEX = "lineStartRegex";
 	public static final String DEFAULT_REGEX = "\\s?\\d\\d\\d\\d-\\d\\d-\\d\\d\\s\\d\\d:\\d\\d:\\d\\d,\\d\\d\\d";
+	
+	/**
+	 * the separator of lines in a log.
+	 */
+	public static final String SEPARATOR = "separatorBetweenLines";
+	public static final String DEFAULT_SEPARATOR = "\u0005";
+	
 }
