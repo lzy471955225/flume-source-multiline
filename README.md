@@ -27,7 +27,7 @@ For instance, the HDFS's datanode log is usually starting with '2016-03-18 17:53
 The MultiLineExecSource is based on the regular exec source and includes the same parameters. It also adds one additional one:
 
 * **lineStartRegex**: It is used to distinguish every line.
-
+* **separatorBetweenLines**: It is separator between lines that from resource file.
 
 Example config:
 
