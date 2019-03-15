@@ -349,6 +349,9 @@ public class MultiLineExecSource extends AbstractSource implements EventDrivenSo
 							Matcher m = pattern.matcher(line);
 							if(m.find()) {
 								if(buffer.size() != 0) {
+									//remove separator that final in line.
+									String str = buffer.remove(buffer.size() - 1);
+									buffer.add(str.substring(0, str.length() - 1));
 									//write to body
 									sourceCounter.incrementEventReceivedCount();
 									String total = "";
@@ -361,9 +364,9 @@ public class MultiLineExecSource extends AbstractSource implements EventDrivenSo
 									}
 									buffer.clear();
 								}
-								buffer.add(line);
+								buffer.add(line + "\u0003");
 							}else {
-								buffer.add(line);
+								buffer.add(line + "\u0003");
 							}
 							//multiline setting end
 						}
